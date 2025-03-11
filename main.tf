@@ -65,9 +65,11 @@ module "aft_backend" {
     aws.primary_region   = aws.aft_management
     aws.secondary_region = aws.tf_backend_secondary_region
   }
-  source           = "./modules/aft-backend"
-  primary_region   = var.ct_home_region
-  secondary_region = var.tf_backend_secondary_region
+  source                                                = "./modules/aft-backend"
+  primary_region                                        = var.ct_home_region
+  secondary_region                                      = var.tf_backend_secondary_region
+  aft_management_account_id                             = var.aft_management_account_id
+  aft_backend_bucket_access_logs_object_expiration_days = var.aft_backend_bucket_access_logs_object_expiration_days
 }
 
 module "aft_code_repositories" {
@@ -90,6 +92,7 @@ module "aft_code_repositories" {
   account_customizations_repo_name                = var.account_customizations_repo_name
   global_customizations_repo_name                 = var.global_customizations_repo_name
   github_enterprise_url                           = var.github_enterprise_url
+  gitlab_selfmanaged_url                          = var.gitlab_selfmanaged_url
   vcs_provider                                    = var.vcs_provider
   terraform_distribution                          = var.terraform_distribution
   account_provisioning_customizations_repo_name   = var.account_provisioning_customizations_repo_name
@@ -228,7 +231,7 @@ module "aft_ssm_parameters" {
   aft_customizations_identify_targets_function_arn            = module.aft_customizations.aft_customizations_identify_targets_function_arn
   aft_customizations_execute_pipeline_function_arn            = module.aft_customizations.aft_customizations_execute_pipeline_function_arn
   aft_customizations_get_pipeline_executions_function_arn     = module.aft_customizations.aft_customizations_get_pipeline_executions_function_arn
-  codestar_connection_arn                                     = module.aft_code_repositories.codestar_connection_arn
+  codeconnections_connection_arn                              = module.aft_code_repositories.codeconnections_connection_arn
   aft_log_key_arn                                             = module.aft_feature_options.aws_aft_log_key_arn
   aft_logging_bucket_arn                                      = module.aft_feature_options.aws_aft_logs_s3_bucket_arn
   aft_config_backend_bucket_id                                = module.aft_backend.bucket_id
@@ -267,5 +270,6 @@ module "aft_ssm_parameters" {
   account_provisioning_customizations_repo_branch             = var.account_provisioning_customizations_repo_branch
   maximum_concurrent_customizations                           = var.maximum_concurrent_customizations
   github_enterprise_url                                       = var.github_enterprise_url
+  gitlab_selfmanaged_url                                      = var.gitlab_selfmanaged_url
   aft_metrics_reporting                                       = var.aft_metrics_reporting
 }

@@ -222,14 +222,16 @@ variable "account_customizations_repo_branch" {
   type = string
 }
 
-variable "codestar_connection_arn" {
+variable "codeconnections_connection_arn" {
   type = string
 }
 
 variable "github_enterprise_url" {
   type = string
 }
-
+variable "gitlab_selfmanaged_url" {
+  type = string
+}
 variable "aft_logging_bucket_arn" {
   type = string
 }

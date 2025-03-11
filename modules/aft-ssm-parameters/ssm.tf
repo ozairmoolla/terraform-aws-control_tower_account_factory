@@ -334,16 +334,22 @@ resource "aws_ssm_parameter" "account_provisioning_customizations_repo_branch" {
   value = var.account_provisioning_customizations_repo_branch
 }
 
-resource "aws_ssm_parameter" "codestar_connection_arn" {
-  name  = "/aft/config/vcs/codestar-connection-arn"
+resource "aws_ssm_parameter" "codeconnections_connection_arn" {
+  name  = "/aft/config/vcs/codeconnections-connection-arn"
   type  = "String"
-  value = var.codestar_connection_arn
+  value = var.codeconnections_connection_arn
 }
 
 resource "aws_ssm_parameter" "github_enterprise_url" {
   name  = "/aft/config/vcs/github-enterprise-url"
   type  = "String"
   value = var.github_enterprise_url
+}
+
+resource "aws_ssm_parameter" "gitlab_selfmanaged_url" {
+  name  = "/aft/config/vcs/gitlab-selfmanaged-url"
+  type  = "String"
+  value = var.gitlab_selfmanaged_url
 }
 
 resource "aws_ssm_parameter" "aft_logging_bucket_arn" {

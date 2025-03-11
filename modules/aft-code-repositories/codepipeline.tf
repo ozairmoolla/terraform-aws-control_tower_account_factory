@@ -6,9 +6,10 @@
 ##############################################################
 
 resource "aws_codepipeline" "codecommit_account_request" {
-  count    = local.vcs.is_codecommit ? 1 : 0
-  name     = "ct-aft-account-request"
-  role_arn = aws_iam_role.account_request_codepipeline_role.arn
+  count         = local.vcs.is_codecommit ? 1 : 0
+  name          = "ct-aft-account-request"
+  role_arn      = aws_iam_role.account_request_codepipeline_role.arn
+  pipeline_type = "V2"
 
   artifact_store {
     location = var.codepipeline_s3_bucket_name
@@ -107,13 +108,19 @@ resource "aws_cloudwatch_event_target" "account_request" {
 }
 
 ##############################################################
-# CodeStar - account-request
+# CodeConnections - account-request
 ##############################################################
 
-resource "aws_codepipeline" "codestar_account_request" {
-  count    = local.vcs.is_codecommit ? 0 : 1
-  name     = "ct-aft-account-request"
-  role_arn = aws_iam_role.account_request_codepipeline_role.arn
+moved {
+  from = aws_codepipeline.codestar_account_request
+  to   = aws_codepipeline.codeconnections_account_request
+}
+
+resource "aws_codepipeline" "codeconnections_account_request" {
+  count         = local.vcs.is_codecommit ? 0 : 1
+  name          = "ct-aft-account-request"
+  role_arn      = aws_iam_role.account_request_codepipeline_role.arn
+  pipeline_type = "V2"
 
   artifact_store {
     location = var.codepipeline_s3_bucket_name
@@ -140,7 +147,7 @@ resource "aws_codepipeline" "codestar_account_request" {
       output_artifacts = ["account-request"]
 
       configuration = {
-        ConnectionArn        = lookup({ github = local.connection_arn.github, bitbucket = local.connection_arn.bitbucket, githubenterprise = local.connection_arn.githubenterprise }, var.vcs_provider)
+        ConnectionArn        = lookup({ github = local.connection_arn.github, bitbucket = local.connection_arn.bitbucket, githubenterprise = local.connection_arn.githubenterprise, gitlab = local.connection_arn.gitlab, gitlabselfmanaged = local.connection_arn.gitlabselfmanaged }, var.vcs_provider)
         FullRepositoryId     = var.account_request_repo_name
         BranchName           = var.account_request_repo_branch
         DetectChanges        = true
@@ -176,9 +183,10 @@ resource "aws_codepipeline" "codestar_account_request" {
 ##############################################################
 
 resource "aws_codepipeline" "codecommit_account_provisioning_customizations" {
-  count    = local.vcs.is_codecommit ? 1 : 0
-  name     = "ct-aft-account-provisioning-customizations"
-  role_arn = aws_iam_role.account_provisioning_customizations_codepipeline_role.arn
+  count         = local.vcs.is_codecommit ? 1 : 0
+  name          = "ct-aft-account-provisioning-customizations"
+  role_arn      = aws_iam_role.account_provisioning_customizations_codepipeline_role.arn
+  pipeline_type = "V2"
 
   artifact_store {
     location = var.codepipeline_s3_bucket_name
@@ -235,16 +243,19 @@ resource "aws_codepipeline" "codecommit_account_provisioning_customizations" {
   }
 }
 
-
-
 ##############################################################
-# CodeStar - account-provisioning-customizations
+# CodeConnections - account-provisioning-customizations
 ##############################################################
 
-resource "aws_codepipeline" "codestar_account_provisioning_customizations" {
-  count    = local.vcs.is_codecommit ? 0 : 1
-  name     = "ct-aft-account-provisioning-customizations"
-  role_arn = aws_iam_role.account_provisioning_customizations_codepipeline_role.arn
+moved {
+  from = aws_codepipeline.codestar_account_provisioning_customizations
+  to   = aws_codepipeline.codeconnections_account_provisioning_customizations
+}
+resource "aws_codepipeline" "codeconnections_account_provisioning_customizations" {
+  count         = local.vcs.is_codecommit ? 0 : 1
+  name          = "ct-aft-account-provisioning-customizations"
+  role_arn      = aws_iam_role.account_provisioning_customizations_codepipeline_role.arn
+  pipeline_type = "V2"
 
   artifact_store {
     location = var.codepipeline_s3_bucket_name
@@ -271,7 +282,7 @@ resource "aws_codepipeline" "codestar_account_provisioning_customizations" {
       output_artifacts = ["account-provisioning-customizations"]
 
       configuration = {
-        ConnectionArn        = lookup({ github = local.connection_arn.github, bitbucket = local.connection_arn.bitbucket, githubenterprise = local.connection_arn.githubenterprise }, var.vcs_provider)
+        ConnectionArn        = lookup({ github = local.connection_arn.github, bitbucket = local.connection_arn.bitbucket, githubenterprise = local.connection_arn.githubenterprise, gitlab = local.connection_arn.gitlab, gitlabselfmanaged = local.connection_arn.gitlabselfmanaged }, var.vcs_provider)
         FullRepositoryId     = var.account_provisioning_customizations_repo_name
         BranchName           = var.account_provisioning_customizations_repo_branch
         DetectChanges        = true

@@ -63,7 +63,7 @@ As of version 1.6.0, AFT collects anonymous operational metrics to help AWS impr
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0, < 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.0, < 2.0.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.11.0, < 6.0.0 |
 
 ## Providers
@@ -93,6 +93,8 @@ As of version 1.6.0, AFT collects anonymous operational metrics to help AWS impr
 | Name | Type |
 |------|------|
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
+| [aws_service.home_region_validation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/service) | data source |
+| [aws_ssm_parameters_by_path.servicecatalog_regional_data](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameters_by_path) | data source |
 | [local_file.python_version](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 | [local_file.version](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
@@ -106,6 +108,7 @@ As of version 1.6.0, AFT collects anonymous operational metrics to help AWS impr
 | <a name="input_account_provisioning_customizations_repo_name"></a> [account\_provisioning\_customizations\_repo\_name](#input\_account\_provisioning\_customizations\_repo\_name) | Repository name for the account provisioning customizations files. For non-CodeCommit repos, name should be in the format of Org/Repo | `string` | `"aft-account-provisioning-customizations"` | no |
 | <a name="input_account_request_repo_branch"></a> [account\_request\_repo\_branch](#input\_account\_request\_repo\_branch) | Branch to source account request repo from | `string` | `"main"` | no |
 | <a name="input_account_request_repo_name"></a> [account\_request\_repo\_name](#input\_account\_request\_repo\_name) | Repository name for the account request files. For non-CodeCommit repos, name should be in the format of Org/Repo | `string` | `"aft-account-request"` | no |
+| <a name="input_aft_backend_bucket_access_logs_object_expiration_days"></a> [aft\_backend\_bucket\_access\_logs\_object\_expiration\_days](#input\_aft\_backend\_bucket\_access\_logs\_object\_expiration\_days) | Amount of days to keep the objects stored in the access logs bucket for AFT backend buckets | `number` | `365` | no |
 | <a name="input_aft_enable_vpc"></a> [aft\_enable\_vpc](#input\_aft\_enable\_vpc) | Flag turning use of VPC on/off for AFT | `bool` | `true` | no |
 | <a name="input_aft_feature_cloudtrail_data_events"></a> [aft\_feature\_cloudtrail\_data\_events](#input\_aft\_feature\_cloudtrail\_data\_events) | Feature flag toggling CloudTrail data events on/off | `bool` | `false` | no |
 | <a name="input_aft_feature_delete_default_vpcs_enabled"></a> [aft\_feature\_delete\_default\_vpcs\_enabled](#input\_aft\_feature\_delete\_default\_vpcs\_enabled) | Feature flag toggling deletion of default VPCs on/off | `bool` | `false` | no |
@@ -127,6 +130,7 @@ As of version 1.6.0, AFT collects anonymous operational metrics to help AWS impr
 | <a name="input_ct_home_region"></a> [ct\_home\_region](#input\_ct\_home\_region) | The region from which this module will be executed. This MUST be the same region as Control Tower is deployed. | `string` | n/a | yes |
 | <a name="input_ct_management_account_id"></a> [ct\_management\_account\_id](#input\_ct\_management\_account\_id) | Control Tower Management Account Id | `string` | n/a | yes |
 | <a name="input_github_enterprise_url"></a> [github\_enterprise\_url](#input\_github\_enterprise\_url) | GitHub enterprise URL, if GitHub Enterprise is being used | `string` | `"null"` | no |
+| <a name="input_gitlab_selfmanaged_url"></a> [gitlab\_selfmanaged\_url](#input\_gitlab\_selfmanaged\_url) | GitLab SelfManaged URL, if GitLab SelfManaged is being used | `string` | `"null"` | no |
 | <a name="input_global_codebuild_timeout"></a> [global\_codebuild\_timeout](#input\_global\_codebuild\_timeout) | Codebuild build timeout | `number` | `60` | no |
 | <a name="input_global_customizations_repo_branch"></a> [global\_customizations\_repo\_branch](#input\_global\_customizations\_repo\_branch) | Branch to source global customizations repo from | `string` | `"main"` | no |
 | <a name="input_global_customizations_repo_name"></a> [global\_customizations\_repo\_name](#input\_global\_customizations\_repo\_name) | Repository name for the global customization files. For non-CodeCommit repos, name should be in the format of Org/Repo | `string` | `"aft-global-customizations"` | no |
@@ -137,9 +141,9 @@ As of version 1.6.0, AFT collects anonymous operational metrics to help AWS impr
 | <a name="input_terraform_distribution"></a> [terraform\_distribution](#input\_terraform\_distribution) | Terraform distribution being used for AFT - valid values are oss, tfc, or tfe | `string` | `"oss"` | no |
 | <a name="input_terraform_org_name"></a> [terraform\_org\_name](#input\_terraform\_org\_name) | Organization name for Terraform Cloud or Enterprise | `string` | `"null"` | no |
 | <a name="input_terraform_token"></a> [terraform\_token](#input\_terraform\_token) | Terraform token for Cloud or Enterprise | `string` | `"null"` | no |
-| <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version being used for AFT | `string` | `"1.5.7"` | no |
+| <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version being used for AFT | `string` | `"1.6.0"` | no |
 | <a name="input_tf_backend_secondary_region"></a> [tf\_backend\_secondary\_region](#input\_tf\_backend\_secondary\_region) | AFT creates a backend for state tracking for its own state as well as OSS cases. The backend's primary region is the same as the AFT region, but this defines the secondary region to replicate to. | `string` | `""` | no |
-| <a name="input_vcs_provider"></a> [vcs\_provider](#input\_vcs\_provider) | Customer VCS Provider - valid inputs are codecommit, bitbucket, github, or githubenterprise | `string` | `"codecommit"` | no |
+| <a name="input_vcs_provider"></a> [vcs\_provider](#input\_vcs\_provider) | Customer VCS Provider - valid inputs are codecommit, bitbucket, github, githubenterprise, gitlab, or gitLab self-managed | `string` | `"codecommit"` | no |
 
 ## Outputs
 
@@ -166,6 +170,7 @@ As of version 1.6.0, AFT collects anonymous operational metrics to help AWS impr
 | <a name="output_ct_home_region"></a> [ct\_home\_region](#output\_ct\_home\_region) | n/a |
 | <a name="output_ct_management_account_id"></a> [ct\_management\_account\_id](#output\_ct\_management\_account\_id) | n/a |
 | <a name="output_github_enterprise_url"></a> [github\_enterprise\_url](#output\_github\_enterprise\_url) | n/a |
+| <a name="output_gitlab_selfmanaged_url"></a> [gitlab\_selfmanaged\_url](#output\_gitlab\_selfmanaged\_url) | n/a |
 | <a name="output_global_customizations_repo_branch"></a> [global\_customizations\_repo\_branch](#output\_global\_customizations\_repo\_branch) | n/a |
 | <a name="output_global_customizations_repo_name"></a> [global\_customizations\_repo\_name](#output\_global\_customizations\_repo\_name) | n/a |
 | <a name="output_log_archive_account_id"></a> [log\_archive\_account\_id](#output\_log\_archive\_account\_id) | n/a |
